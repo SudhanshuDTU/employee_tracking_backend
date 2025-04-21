@@ -5,6 +5,7 @@ export const getAllUsers = async (req, res) => {
     const users = await userModel.getAllUsers();
     res.status(200).json(users);
   } catch (error) {
+    console.log("Error in /api/users:", error.message);
     res.status(500).json({ error: error.message });
   }
 };
