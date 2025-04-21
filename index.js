@@ -59,6 +59,17 @@ io.on('connection', (socket) => {
 app.get('/locations',(req,res)=>{
     res.json(usersLocation)
 })
+
+app.get("/test-db", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.json(result.rows || result[0]);
+  } catch (err) {
+    console.error("DB Test Error:", err.message);
+    res.status(500).json({ error: "DB connection failed" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
