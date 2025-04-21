@@ -60,7 +60,7 @@ app.get('/locations',(req,res)=>{
     res.json(usersLocation)
 })
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     if(pool){
         console.log("hi from db");
