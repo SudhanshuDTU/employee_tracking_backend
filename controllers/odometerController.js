@@ -34,7 +34,7 @@ export const createOdometerReading = async (req, res) => {
 };
 
 export const updateOdometerReading = async (req, res) => {
-  const { attendance_id } = req.params;
+  const {id : attendance_id } = req.params;
   const odometer = req.body;
   try {
     const updatedOdometerReading = await odometerModel.updateOdometerReading(attendance_id, odometer);

@@ -67,3 +67,13 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const updateOdometerVisible = async (req, res) => {
+  const { id } = req.params;
+  const {odometer_visible} = req.body;
+  try {
+    await userModel.updateOdometerVisible(id,odometer_visible);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

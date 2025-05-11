@@ -15,13 +15,14 @@ export const getExpenseById = async (id) => {
 
 export const createExpense = async (expense) => {
   const query =
-    'INSERT INTO "Expenses" (user_id, amount, description, bill_url,status) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    'INSERT INTO "Expenses" (user_id, amount, description, bill_url,status,expense_date) VALUES ($1, $2, $3, $4, $5,$6) RETURNING *';
   const values = [
     expense.user_id,
     expense.amount,
     expense.description,
     expense.bill_url,
-    expense.status
+    expense.status,
+    expense.expense_date
   ];
   const result = await pool.query(query, values);
   return result.rows[0];
@@ -29,7 +30,7 @@ export const createExpense = async (expense) => {
 
 export const updateExpense = async (id, expense) => {
   const query =
-    'UPDATE "Expenses" SET user_id = $1, amount = $2, description = $3, bill_url = $4, status = $5, approved_by = $6, approved_at = $7, created_at = $8 WHERE id = $9 RETURNING *';
+    'UPDATE "Expenses" SET user_id = $1, amount = $2, description = $3, bill_url = $4, status = $5, approved_by = $6, approved_at = $7, created_at = $8,expense_date = $9, rejection_reason = $10 WHERE id = $11 RETURNING *';
   const values = [
     expense.user_id,
     expense.amount,
@@ -39,6 +40,8 @@ export const updateExpense = async (id, expense) => {
     expense.approved_by,
     expense.approved_at,
     expense.created_at,
+    expense.expense_date,
+    expense.rejection_reason,
     id,
   ];
   const result = await pool.query(query, values);
