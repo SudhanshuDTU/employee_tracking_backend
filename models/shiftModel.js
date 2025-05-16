@@ -27,7 +27,7 @@ export const createShift = async (shift) => {
 
 export const updateShift = async (id, shift) => {
   const query =
-    'UPDATE "Shifts" SET  warehouse_id = $1, shift_start_time = $2, shift_end_time = $3, WHERE id = $4 RETURNING *';
+    'UPDATE "Shifts" SET  warehouse_id = $1, shift_start_time = $2, shift_end_time = $3 WHERE id = $4 RETURNING *';
   const values = [
     shift.warehouse_id,
     shift.shift_start_time,
