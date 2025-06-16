@@ -16,7 +16,10 @@ import attendanceOverrideRoute from "./routes/attendanceOverrideRoutes.js"
 import pool from "./config/db.js";
 import http from 'http'
 import {Server} from 'socket.io'
-import '../employee_tracking_backend/cronjob/attendanceCronJob.js'
+import { scheduleCronJob } from "./cronjob/attendanceCronJob.js";
+
+
+
 
 const app = express();
 const server = http.createServer(app)
@@ -35,33 +38,41 @@ app.use("/api/leaves", leaveRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use("/api/warehouse",warehouseRoutes)
 
+const init = async()=>{
+  console.log("check 1");
+ await scheduleCronJob()
+}
+init();
 
-const io = new Server(server,{
-    cors:{
-        origin: '*',
-    }
-});
-let usersLocation = {};
-io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
+// const io = new Server(server,{
+//     cors:{
+//         origin: '*',
+//     }
+// });
+// let usersLocation = {};
+// io.on('connection', (socket) => {
+//     console.log('User connected:', socket.id);
   
-    socket.on('sendLocation', (data) => {
-      usersLocation[data.userId] = {
-        latitude: data.latitude,
-        longitude: data.longitude,
-        timestamp: new Date(),
-      };
-      io.emit('locationUpdate', { userId: data.userId, ...usersLocation[data.userId] });
-    });
+//     socket.on('sendLocation', (data) => {
+//       usersLocation[data.userId] = {
+//         latitude: data.latitude,
+//         longitude: data.longitude,
+//         timestamp: new Date(),
+//       };
+//       io.emit('locationUpdate', { userId: data.userId, ...usersLocation[data.userId] });
+//     });
   
-    socket.on('disconnect', () => {
-      console.log('User disconnected:', socket.id);
-    });
-  });
+//     socket.on('disconnect', () => {
+//       console.log('User disconnected:', socket.id);
+//     });
+//   });
 
-app.get('/locations',(req,res)=>{
-    res.json(usersLocation)
-})
+// app.get('/locations',(req,res)=>{
+//     res.json(usersLocation)
+// })
+
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

@@ -19,7 +19,10 @@ const holidays = [
   '2025-12-25', // Christmas
 ];
 
-cron.schedule('45 23 * * *', async () => {
+
+
+export const runCronJob = async () => {
+  console.log("check2");
     try {
       const today = dayjs().format('YYYY-MM-DD');
   
@@ -134,5 +137,11 @@ cron.schedule('45 23 * * *', async () => {
     } catch (err) {
       console.error('Cron Job Error:', err.message);
     }
+  }
+
+export const scheduleCronJob = async ()=>{
+  cron.schedule('45 23 * * *',async()=>{
+    console.log('🕐 Running cron job...');
+    await runCronJob();
   });
-  
+}
