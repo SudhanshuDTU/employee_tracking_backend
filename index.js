@@ -16,6 +16,7 @@ import attendanceOverrideRoute from "./routes/attendanceOverrideRoutes.js"
 import pool from "./config/db.js";
 import http from 'http'
 import {Server} from 'socket.io'
+import '../employee_tracking_backend/cronjob/attendanceCronJob.js'
 
 const app = express();
 const server = http.createServer(app)

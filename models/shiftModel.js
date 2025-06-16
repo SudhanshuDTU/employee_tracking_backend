@@ -15,9 +15,8 @@ export const getShiftById = async (id) => {
 
 export const createShift = async (shift) => {
   const query =
-    'INSERT INTO "Shifts" (warehouse_id, shift_start_time, shift_end_time) VALUES ($1, $2, $3) RETURNING *';
+    'INSERT INTO "Shifts" (shift_start_time, shift_end_time) VALUES ($1, $2) RETURNING *';
   const values = [
-    shift.warehouse_id,
     shift.shift_start_time,
     shift.shift_end_time,
   ];
@@ -27,9 +26,8 @@ export const createShift = async (shift) => {
 
 export const updateShift = async (id, shift) => {
   const query =
-    'UPDATE "Shifts" SET  warehouse_id = $1, shift_start_time = $2, shift_end_time = $3, WHERE id = $4 RETURNING *';
+    'UPDATE "Shifts" SET shift_start_time = $1, shift_end_time = $2 WHERE id = $3 RETURNING *';
   const values = [
-    shift.warehouse_id,
     shift.shift_start_time,
     shift.shift_end_time,
     id,

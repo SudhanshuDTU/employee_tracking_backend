@@ -5,7 +5,7 @@ export const createAttendanceOverride = async (req, res) => {
     try {
         const newOverride = await AttendanceOverride.createAttendanceOverride(userId,date,time,reason)
         res.status(201).json(newOverride);
-    } catch (error) {
+    } catch (error) { 
         res.status(500).json({ error: 'Failed to create attendance override', details: error.message });
     }
 }
