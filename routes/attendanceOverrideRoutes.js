@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/', attendanceOverrideController.createAttendanceOverride);
 router.get('/', attendanceOverrideController.getAllAttendanceOverride);
 router.get('/:id', attendanceOverrideController.getAttendanceOverrideById);
-router.get('/:user_id', attendanceOverrideController.getAttendanceOverrideByUserId);
+router.get('/user/:user_id', attendanceOverrideController.getAttendanceOverrideByUserId);
 
 router.put('/:id', attendanceOverrideController.updateAttendanceOverride);
 
