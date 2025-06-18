@@ -104,9 +104,7 @@ export const checkIn = async (req, res) => {
       longitude
     );
 
-    if (distance > 200) {
-      return res.status(400).json({ error: 'Outside allowed radius' });
-    }
+    
 
     const attendance = {
       user_id,
