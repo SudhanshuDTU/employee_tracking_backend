@@ -16,7 +16,7 @@ export const getBreakByAttendanceId = async (id) => {
   const query = 'SELECT * FROM "Breaks" WHERE attendance_id = $1';
   const values = [id];
   const result = await pool.query(query, values);
-  return result.rows[0];
+  return result.rows;
 };
 
 
