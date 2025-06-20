@@ -22,6 +22,19 @@ export const getBreakById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const getBreakByAttendanceId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const breakRecords = await breakModel.getBreakByAttendanceId(id);
+    if (breakRecords) {
+      res.status(200).json(breakRecords);
+    } else {
+      res.status(404).json({ error: 'Break not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const createBreak = async (req, res) => {
   console.log("start");
