@@ -70,7 +70,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
   // Get today's active attendance for this user
   const query = `
     SELECT * FROM "Attendance"
-    WHERE user_id = $1 AND status = "checked_in"
+    WHERE user_id = $1 AND status = 'checked_in'
     ORDER BY check_in_time DESC
     LIMIT 1
   `;
