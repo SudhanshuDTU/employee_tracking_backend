@@ -180,3 +180,26 @@ export const updateBreakInAttendance = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Location related
+
+export const handleLocationUpdate = async (req, res) => {
+  try {
+    const { userId, latitude, longitude } = req.body;
+
+    if (!userId || !latitude || !longitude) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const updatedAttendance = await updateLocationAndDistance(userId, latitude, longitude);
+
+    if (!updatedAttendance) {
+      return res.status(404).json({ message: 'No active check-in found' });
+    }
+
+    return res.status(200).json({ message: 'Location updated', updatedAttendance });
+  } catch (err) {
+    console.error('Error in handleLocationUpdate:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
