@@ -99,7 +99,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
   const lastLat = attendance?.last_latitude;
   const lastLng = attendance?.last_longitude;
 
-  let newDistance = attendance.total_distance || 0;
+  let newDistance = parseFloat(attendance.total_distance) || 0;
 
   // Calculate new distance only if lastLat/lng exist
   if (lastLat && lastLng) {
