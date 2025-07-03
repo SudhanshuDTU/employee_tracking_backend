@@ -12,5 +12,6 @@ router.post('/', attendanceController.createAttendance);
 router.put('/:id', attendanceController.updateAttendance);
 router.put('/break/:id', attendanceController.updateBreakInAttendance);
 router.delete('/:id', attendanceController.deleteAttendance);
+router.put('/update-location',attendanceController.handleLocationUpdate)
 
 export default router;
