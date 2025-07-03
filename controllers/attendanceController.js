@@ -191,7 +191,7 @@ export const handleLocationUpdate = async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const updatedAttendance = await updateLocationAndDistance(userId, latitude, longitude);
+    const updatedAttendance = await attendanceModel.updateLocationAndDistance(userId, latitude, longitude);
 
     if (!updatedAttendance) {
       return res.status(404).json({ message: 'No active check-in found' });
