@@ -63,3 +63,48 @@ export const deleteAttendance = async (id) => {
   const values = [id];
   await pool.query(query, values);
 };
+
+// Location update
+
+export const updateLocationAndDistance = async (userId, latitude, longitude) => {
+  // Get today's active attendance for this user
+  const query = `
+    SELECT * FROM "Attendance"
+    WHERE user_id = $1 AND status = "checked_in"
+    ORDER BY check_in_time DESC
+    LIMIT 1
+  `;
+  const { rows } = await pool.query(query, [userId]);
+  if (rows.length === 0) return null;
+
+  const attendance = rows[0];
+
+  // Get last known location from DB (store these in new columns)
+  const lastLat = attendance?.last_latitude;
+  const lastLng = attendance?.last_longitude;
+
+  let newDistance = attendance.total_distance || 0;
+
+  // Calculate new distance only if lastLat/lng exist
+  if (lastLat && lastLng) {
+    const dist = haversine(
+      { lat: lastLat, lon: lastLng },
+      { lat: latitude, lon: longitude }
+    );
+    newDistance += dist; // Convert meters to km if needed
+  }
+
+  // Update Attendance row
+  const updateQuery = `
+    UPDATE "Attendance"
+    SET last_latitude = $1,
+        last_longitude = $2,
+        total_distance = $3
+    WHERE id = $4
+    RETURNING *
+  `;
+
+  const values = [latitude, longitude, newDistance, attendance.id];
+  const result = await pool.query(updateQuery, values);
+  return result.rows[0];
+};
