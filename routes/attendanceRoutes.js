@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/', attendanceController.getAllAttendance);
 router.post('/check-in', attendanceController.checkIn);
 router.post('/check-out', attendanceController.checkOut);
+router.put('/location/update-location',attendanceController.handleLocationUpdate)
 router.get('/:id', attendanceController.getAttendanceById);
 router.get('/user/:id', attendanceController.getAttendanceByUserId);
 router.post('/', attendanceController.createAttendance);
