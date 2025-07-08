@@ -109,6 +109,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
     );
     newDistance += dist; // Convert meters to km if needed
   }
+   console.log(`total distance is ${newDistance}`);
 
   // Update Attendance row
   const updateQuery = `
@@ -122,5 +123,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
 
   const values = [latitude, longitude, newDistance, attendance.id];
   const result = await pool.query(updateQuery, values);
+    console.log(`new updated att values are ${result.rows[0]}`);
+
   return result.rows[0];
 };
