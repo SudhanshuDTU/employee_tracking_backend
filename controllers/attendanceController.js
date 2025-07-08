@@ -124,7 +124,7 @@ export const checkIn = async (req, res) => {
 };
 
 export const checkOut = async (req, res) => {
-  const { id, latitude, longitude,total_distance} = req.body;
+  const { id, latitude, longitude} = req.body;
 
   try {
     const attendance = await attendanceModel.getAttendanceById(id);
@@ -147,7 +147,7 @@ export const checkOut = async (req, res) => {
       check_out_time: new Date(),
       check_out_latitude: latitude,
       check_out_longitude: longitude,
-      total_distance: total_distance,
+     
       status: 'present'
     };
 
