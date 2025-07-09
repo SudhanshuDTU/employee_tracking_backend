@@ -99,6 +99,38 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
   const lastLat = attendance?.last_latitude;
   const lastLng = attendance?.last_longitude;
 
+// 1. Fetch warehouse info
+  const warehouseQuery = `SELECT * FROM "Warehouse" WHERE id = $1`;
+  const warehouseRes = await pool.query(warehouseQuery, [attendance.warehouse_id]);
+  if (warehouseRes.rows.length === 0) return null;
+
+  const warehouse = warehouseRes.rows[0];
+  // 2. Calculate distance from current location to warehouse center
+  const distFromWarehouse = haversine(
+    { lat: warehouse.latitude, lon: warehouse.longitude },
+    { lat: latitude, lon: longitude }
+  );
+  if (distFromWarehouse > warehouse.radius) {
+    console.log('User is outside the warehouse radius.');
+    return null;
+  }
+
+  // 3. Check break status
+  const breakIds = attendance.breakids || [];
+  const lastBreakId = breakIds[breakIds.length - 1];
+  if (lastBreakId) {
+    const breakQuery = `SELECT * FROM "Breaks" WHERE id = $1`;
+    const breakRes = await pool.query(breakQuery, [lastBreakId]);
+    const breakRecord = breakRes.rows[0];
+
+    // If break_end_time is null => user is currently on break
+    if (!breakRecord?.break_end_time) {
+      console.log('User is currently on a break.');
+      return null;
+    }
+  }
+
+  
   let newDistance = parseFloat(attendance.total_distance) || 0;
 
   // Calculate new distance only if lastLat/lng exist
