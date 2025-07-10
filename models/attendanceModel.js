@@ -132,14 +132,19 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
 
   
   let newDistance = parseFloat(attendance.total_distance) || 0;
-
+  const MOVEMENT_THRESHOLD_METERS = 15;
   // Calculate new distance only if lastLat/lng exist
   if (lastLat && lastLng) {
     const dist = haversine(
       { lat: lastLat, lon: lastLng },
       { lat: latitude, lon: longitude }
     );
-    newDistance += dist; // Convert meters to km if needed
+    if (dist >= MOVEMENT_THRESHOLD_METERS) {
+      newDistance += dist;
+      console.log(`Added distance: ${dist.toFixed(2)} meters`);
+    } else {
+      console.log(`Ignored small movement: ${dist.toFixed(2)} meters`);
+    }
   }
    console.log(`total distance is ${newDistance}`);
 
