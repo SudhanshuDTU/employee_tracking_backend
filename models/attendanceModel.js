@@ -132,7 +132,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
 
   
   let newDistance = parseFloat(attendance.total_distance) || 0;
-  const MOVEMENT_THRESHOLD_METERS = 15;
+  const MOVEMENT_THRESHOLD_METERS = 25;
   // Calculate new distance only if lastLat/lng exist
   if (lastLat && lastLng) {
     const dist = haversine(
