@@ -1,13 +1,13 @@
 import pool from '../config/db.js';
 
 export const getAllWarehouses = async () => {
-  const query = 'SELECT * FROM "Warehouse"';
+  const query = 'SELECT * FROM "warehouse"';
   const result = await pool.query(query);
   return result.rows;
 };
 
 export const getWarehouseById = async (id) => {
-  const query = 'SELECT * FROM "Warehouse" WHERE id = $1';
+  const query = 'SELECT * FROM "warehouse" WHERE id = $1';
   const values = [id];
   const result = await pool.query(query, values);
   return result.rows[0];
@@ -15,7 +15,7 @@ export const getWarehouseById = async (id) => {
 
 export const createWarehouse = async (warehouse) => {
   const query =
-    'INSERT INTO "Warehouse" (location_name, latitude, longitude, radius, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    'INSERT INTO "warehouse" (location_name, latitude, longitude, radius, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *';
   const values = [
     warehouse.location_name,
     warehouse.latitude,
@@ -29,7 +29,7 @@ export const createWarehouse = async (warehouse) => {
 
 export const updateWarehouse = async (id, warehouse) => {
   const query =
-    'UPDATE "Warehouse" SET location_name = $1, latitude = $2, longitude = $3, radius = $4, created_at = $5 WHERE id = $6 RETURNING *';
+    'UPDATE "warehouse" SET location_name = $1, latitude = $2, longitude = $3, radius = $4, created_at = $5 WHERE id = $6 RETURNING *';
   const values = [
     warehouse.location_name,
     warehouse.latitude,
@@ -43,7 +43,7 @@ export const updateWarehouse = async (id, warehouse) => {
 };
 
 export const deleteWarehouse = async (id) => {
-  const query = 'DELETE FROM "Warehouse" WHERE id = $1';
+  const query = 'DELETE FROM "warehouse" WHERE id = $1';
   const values = [id];
   await pool.query(query, values);
 };

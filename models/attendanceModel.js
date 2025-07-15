@@ -17,19 +17,19 @@ const haversine = (coord1, coord2) => {
 };
 
 export const getAllAttendance = async () => {
-  const query = 'SELECT * FROM "Attendance"';
+  const query = 'SELECT * FROM "attendance"';
   const result = await pool.query(query);
   return result.rows;
 };
 
 export const getAttendanceById = async (id) => {
-  const query = 'SELECT * FROM "Attendance" WHERE id = $1';
+  const query = 'SELECT * FROM "attendance" WHERE id = $1';
   const values = [id];
   const result = await pool.query(query, values);
   return result.rows[0];
 };
 export const getAttendanceByUserId = async (id) => {
-  const query = 'SELECT * FROM "Attendance" WHERE user_id = $1';
+  const query = 'SELECT * FROM "attendance" WHERE user_id = $1';
   const values = [id];
   const result = await pool.query(query, values);
   return result.rows;
@@ -38,7 +38,7 @@ export const getAttendanceByUserId = async (id) => {
 export const createAttendance = async (attendance) => {
   console.log("here i m @3");
   const query =
-    'INSERT INTO "Attendance" (user_id, warehouse_id, check_in_time, check_in_latitude, check_in_longitude, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+    'INSERT INTO "attendance" (user_id, warehouse_id, check_in_time, check_in_latitude, check_in_longitude, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
   const values = [
     attendance.user_id,
     attendance.warehouse_id,
@@ -53,7 +53,7 @@ export const createAttendance = async (attendance) => {
 
 export const updateAttendance = async (id, attendance) => {
   const query =
-    'UPDATE "Attendance" SET user_id = $1, warehouse_id = $2, check_in_time = $3, check_in_latitude = $4, check_in_longitude = $5, check_out_time = $6, check_out_latitude = $7, check_out_longitude = $8, total_distance = $9, status = $10, break_status = $11,breakids = $12 WHERE id = $13 RETURNING *';
+    'UPDATE "attendance" SET user_id = $1, warehouse_id = $2, check_in_time = $3, check_in_latitude = $4, check_in_longitude = $5, check_out_time = $6, check_out_latitude = $7, check_out_longitude = $8, total_distance = $9, status = $10, break_status = $11,breakids = $12 WHERE id = $13 RETURNING *';
   const values = [
     attendance.user_id,
     attendance.warehouse_id,
@@ -75,7 +75,7 @@ export const updateAttendance = async (id, attendance) => {
 
 
 export const deleteAttendance = async (id) => {
-  const query = 'DELETE FROM "Attendance" WHERE id = $1';
+  const query = 'DELETE FROM "attendance" WHERE id = $1';
   const values = [id];
   await pool.query(query, values);
 };
@@ -85,7 +85,7 @@ export const deleteAttendance = async (id) => {
 export const updateLocationAndDistance = async (userId, latitude, longitude) => {
   // Get today's active attendance for this user
   const query = `
-    SELECT * FROM "Attendance"
+    SELECT * FROM "attendance"
     WHERE user_id = $1 AND status = 'checked_in'
     ORDER BY check_in_time DESC
     LIMIT 1
@@ -100,7 +100,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
   const lastLng = attendance?.last_longitude;
 
 // 1. Fetch warehouse info
-  const warehouseQuery = `SELECT * FROM "Warehouse" WHERE id = $1`;
+  const warehouseQuery = `SELECT * FROM "warehouse" WHERE id = $1`;
   const warehouseRes = await pool.query(warehouseQuery, [attendance.warehouse_id]);
   if (warehouseRes.rows.length === 0) return null;
 
@@ -119,7 +119,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
   const breakIds = attendance.breakids || [];
   const lastBreakId = breakIds[breakIds.length - 1];
   if (lastBreakId) {
-    const breakQuery = `SELECT * FROM "Breaks" WHERE id = $1`;
+    const breakQuery = `SELECT * FROM "breaks" WHERE id = $1`;
     const breakRes = await pool.query(breakQuery, [lastBreakId]);
     const breakRecord = breakRes.rows[0];
 
@@ -150,7 +150,7 @@ export const updateLocationAndDistance = async (userId, latitude, longitude) => 
 
   // Update Attendance row
   const updateQuery = `
-    UPDATE "Attendance"
+    UPDATE "attendance"
     SET last_latitude = $1,
         last_longitude = $2,
         total_distance = $3

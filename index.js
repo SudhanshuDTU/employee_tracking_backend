@@ -44,34 +44,6 @@ const init = async()=>{
 }
 init();
 
-// const io = new Server(server,{
-//     cors:{
-//         origin: '*',
-//     }
-// });
-// let usersLocation = {};
-// io.on('connection', (socket) => {
-//     console.log('User connected:', socket.id);
-  
-//     socket.on('sendLocation', (data) => {
-//       usersLocation[data.userId] = {
-//         latitude: data.latitude,
-//         longitude: data.longitude,
-//         timestamp: new Date(),
-//       };
-//       io.emit('locationUpdate', { userId: data.userId, ...usersLocation[data.userId] });
-//     });
-  
-//     socket.on('disconnect', () => {
-//       console.log('User disconnected:', socket.id);
-//     });
-//   });
-
-// app.get('/locations',(req,res)=>{
-//     res.json(usersLocation)
-// })
-
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
